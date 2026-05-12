@@ -296,11 +296,11 @@
     }
 
     /* Smooth fade from dark left side into the photo */
-    .hero-photo::after {
-      content: '';
+    .hero-photo-fade {
       position: absolute;
       inset: 0;
       background: linear-gradient(to right, #1a1a1a 0%, rgba(26,26,26,0.6) 18%, rgba(26,26,26,0.15) 35%, transparent 55%);
+      pointer-events: none;
     }
 
     .hero .container {
@@ -1059,7 +1059,7 @@
     /* ===== RESPONSIVE (Skill: bencium responsive — mobile-first breakpoints) ===== */
     @media (max-width: 1024px) {
       .hero-photo { width: 100%; }
-      .hero-photo::after { background: linear-gradient(to top, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.55) 50%, rgba(26,26,26,0.25) 100%); }
+      .hero-photo-fade { background: linear-gradient(to top, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.55) 50%, rgba(26,26,26,0.25) 100%); }
       .hero-buttons { flex-wrap: wrap; }
       .hero-stats { gap: var(--sp-4); }
       .pains-grid { grid-template-columns: repeat(3, 1fr); }
@@ -1132,6 +1132,7 @@
   <section class="hero" aria-label="Hero">
     <div class="hero-photo">
       <img src="Teacher_1.jpg" alt="Анастасия — учитель йоги" width="853" height="1280">
+      <div class="hero-photo-fade" aria-hidden="true"></div>
     </div>
     <div class="container">
       <div class="hero-content">
