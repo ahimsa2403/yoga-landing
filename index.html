@@ -273,43 +273,45 @@
       position: relative;
       min-height: 100vh;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       overflow: hidden;
       background: #1a1a1a;
     }
 
-    .hero-bg {
+    .hero-photo {
       position: absolute;
-      inset: 0;
+      top: 80px;
+      right: 0;
+      bottom: 0;
+      width: 55%;
       z-index: 0;
+      overflow: hidden;
     }
 
-    .hero-bg img {
+    .hero-photo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 20%;
-      opacity: 0.7;
+      object-position: center 45%;
     }
 
-    /* Gradient overlays for text readability */
-    .hero-bg::after {
+    /* Smooth fade from dark left side into the photo */
+    .hero-photo::after {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(to top, rgba(30,25,20,0.85) 0%, rgba(30,25,20,0.3) 45%, transparent 70%),
-        linear-gradient(to right, rgba(30,25,20,0.5) 0%, transparent 60%);
+      background: linear-gradient(to right, #1a1a1a 0%, rgba(26,26,26,0.6) 18%, rgba(26,26,26,0.15) 35%, transparent 55%);
     }
 
     .hero .container {
       position: relative;
       z-index: 1;
-      padding-bottom: var(--sp-6);
       padding-top: var(--sp-12);
+      padding-bottom: var(--sp-6);
+      width: 100%;
     }
 
-    .hero-content { max-width: 620px; }
+    .hero-content { max-width: 560px; }
 
     .hero-tag {
       font-size: var(--fs-xs);
@@ -1056,6 +1058,8 @@
 
     /* ===== RESPONSIVE (Skill: bencium responsive — mobile-first breakpoints) ===== */
     @media (max-width: 1024px) {
+      .hero-photo { width: 100%; }
+      .hero-photo::after { background: linear-gradient(to top, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.55) 50%, rgba(26,26,26,0.25) 100%); }
       .hero-buttons { flex-wrap: wrap; }
       .hero-stats { gap: var(--sp-4); }
       .pains-grid { grid-template-columns: repeat(3, 1fr); }
@@ -1125,14 +1129,14 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg">
-      <img src="Teacher_1.jpg" alt="" width="1920" height="1080">
+  <section class="hero" aria-label="Hero">
+    <div class="hero-photo">
+      <img src="Teacher_1.jpg" alt="Анастасия — учитель йоги" width="853" height="1280">
     </div>
     <div class="container">
       <div class="hero-content">
         <div class="hero-tag reveal">Йога &middot; Медитация &middot; Восстановление</div>
-        <h1 class="reveal reveal-delay-1">Йога для тех,<br>кто работает<br>головой</h1>
+        <h1 class="reveal reveal-delay-1">Йога для тех, кто работает головой</h1>
         <p class="hero-desc reveal reveal-delay-2">Онлайн-практики для IT-специалистов. Здоровая спина, ясный фокус, устойчивая нервная система.</p>
         <div class="hero-buttons reveal reveal-delay-3">
           <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="btn btn-primary">Попробовать бесплатно</a>
@@ -1157,7 +1161,7 @@
   </section>
 
   <!-- PAIN POINTS -->
-  <section class="section pains">
+  <section class="section pains" aria-label="Боли">
     <div class="container">
       <div class="section-header reveal">
         <div class="section-tag">Знакомо?</div>
@@ -1343,7 +1347,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="section faq">
+  <section class="section faq" aria-label="FAQ">
     <div class="container">
       <div class="section-header reveal">
         <div class="section-tag" style="color:var(--green-light)">Вопросы</div>
@@ -1362,7 +1366,7 @@
   </section>
 
   <!-- TELEGRAM -->
-  <section class="section tg-section">
+  <section class="section tg-section" aria-label="Telegram">
     <div class="container">
       <div class="section-header reveal">
         <div class="section-tag">Telegram</div>
