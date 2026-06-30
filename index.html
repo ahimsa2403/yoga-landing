@@ -5,1262 +5,356 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stasyia Yoga — Йога для тех, кто работает головой</title>
   <meta name="description" content="Онлайн-практики йоги для IT-специалистов. Здоровая спина, ясный фокус, устойчивая нервная система. 500+ учеников, 6 лет опыта.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ===== RESET ===== */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ===== DESIGN TOKENS (Skill: ui-ux-pro-max) ===== */
-    :root {
-      --green: #6B7B5A;
-      --green-light: #8A9A76;
-      --green-dark: #4F5C3E;
-      --cream: #F5F0EA;
-      --cream-warm: #EDE7DF;
-      --ivory: #FAF9F6;
-      --brown: #3D3229;
-      --brown-warm: #4A3F34;
-      --text: #2C2620;
-      --text-secondary: #7A7067;
-      --text-inverse: #F5F0EA;
-      --border: rgba(107,123,90,0.12);
-      --border-hover: rgba(107,123,90,0.35);
-
-      /* Typography Scale: 1.333 Perfect Fourth (Skill: bencium) */
-      --fs-xs: 0.75rem;    /* 12px */
-      --fs-sm: 0.875rem;   /* 14px */
-      --fs-base: 1rem;     /* 16px */
-      --fs-md: 1.125rem;   /* 18px */
-      --fs-lg: 1.333rem;   /* ~21px */
-      --fs-xl: 1.777rem;   /* ~28px */
-      --fs-2xl: 2.369rem;  /* ~38px */
-      --fs-3xl: 3.157rem;  /* ~50px */
-      --fs-hero: clamp(2.8rem, 5.5vw, 4.2rem);
-
-      /* Spacing: 8px base */
-      --sp-1: 0.5rem;
-      --sp-2: 1rem;
-      --sp-3: 1.5rem;
-      --sp-4: 2rem;
-      --sp-6: 3rem;
-      --sp-8: 4rem;
-      --sp-12: 6rem;
-      --sp-16: 8rem;
-      --sp-20: 10rem;
-
-      /* Motion (Skill: bencium motion-spec) */
-      --ease-out: cubic-bezier(0, 0, 0.2, 1);
-      --ease-in: cubic-bezier(0.4, 0, 1, 1);
-      --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
-      --duration-fast: 150ms;
-      --duration-normal: 300ms;
-      --duration-slow: 500ms;
-
-      --radius-sm: 12px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --radius-full: 100px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* ===== BASE ===== */
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Source Sans 3', -apple-system, sans-serif;
-      color: var(--text);
-      background: var(--cream);
-      font-size: var(--fs-base);
-      line-height: 1.65;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Grain texture overlay (Skill: frontend-design) */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      line-height: 1.1;
-      letter-spacing: -0.03em; /* Skill: bencium — tight tracking on display */
-    }
-
-    img { display: block; max-width: 100%; }
-
-    /* Focus states (Skill: bencium accessibility) */
-    :focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--sp-3);
-    }
-
-    /* ===== SCROLL REVEAL (Skill: bencium motion-spec) ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity var(--duration-slow) var(--ease-out),
-                  transform var(--duration-slow) var(--ease-out);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal-delay-1 { transition-delay: 100ms; }
-    .reveal-delay-2 { transition-delay: 200ms; }
-    .reveal-delay-3 { transition-delay: 300ms; }
-    .reveal-delay-4 { transition-delay: 400ms; }
-
-    /* ===== BUTTONS (Skill: ui-ux-pro-max — 44px touch, stable states) ===== */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp-1);
-      min-height: 48px;
-      padding: 14px 32px;
-      border-radius: var(--radius-full);
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: var(--fs-sm);
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background var(--duration-fast) var(--ease-out),
-                  transform var(--duration-fast) var(--ease-out),
-                  box-shadow var(--duration-fast) var(--ease-out);
-      touch-action: manipulation;
-    }
-
-    .btn:active { transform: scale(0.97); }
-
-    .btn-primary {
-      background: var(--green);
-      color: var(--ivory);
-    }
-
-    .btn-primary:hover {
-      background: var(--green-dark);
-      box-shadow: 0 4px 16px rgba(107,123,90,0.25);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--green);
-      box-shadow: inset 0 0 0 1px var(--green);
-    }
-
-    .btn-outline:hover {
-      background: var(--green);
-      color: var(--ivory);
-    }
-
-    .btn-ghost {
-      background: rgba(255,255,255,0.08);
-      color: var(--text-inverse);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255,255,255,0.15);
-    }
-
-    /* ===== HEADER ===== */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: var(--sp-2) 0;
-      transition: background var(--duration-normal) var(--ease-out),
-                  backdrop-filter var(--duration-normal);
-    }
-
-    .header.scrolled {
-      background: rgba(245,240,234,0.92);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 1px 0 var(--border);
-    }
-
-    .header .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-lg);
-      font-weight: 600;
-      color: var(--text-inverse);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-      transition: color var(--duration-normal);
-    }
-
-    .header.scrolled .logo { color: var(--text); }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-4);
-    }
-
-    .nav-link {
-      font-size: var(--fs-sm);
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: color var(--duration-fast);
-      padding: var(--sp-1) 0;
-    }
-
-    .nav-link:hover { color: #fff; }
-    .header.scrolled .nav-link { color: var(--text-secondary); }
-    .header.scrolled .nav-link:hover { color: var(--text); }
-
-    .mobile-toggle {
-      display: none;
-      min-width: 44px;
-      min-height: 44px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .mobile-toggle span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: #fff;
-      margin: 5px 0;
-      transition: var(--duration-fast);
-    }
-
-    .header.scrolled .mobile-toggle span { background: var(--text); }
-
-    /* ===== HERO ===== */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: #1a1a1a;
-    }
-
-    .hero-photo {
-      position: absolute;
-      top: 80px;
-      right: 0;
-      bottom: 0;
-      width: 55%;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .hero-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 45%;
-    }
-
-    /* Smooth fade from dark left side into the photo */
-    .hero-photo-fade {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right, #1a1a1a 0%, rgba(26,26,26,0.6) 18%, rgba(26,26,26,0.15) 35%, transparent 55%);
-      pointer-events: none;
-    }
-
-    .hero .container {
-      position: relative;
-      z-index: 1;
-      padding-top: var(--sp-12);
-      padding-bottom: var(--sp-6);
-      width: 100%;
-    }
-
-    .hero-content { max-width: 560px; }
-
-    .hero-tag {
-      font-size: var(--fs-xs);
-      font-weight: 400;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--green-light);
-      margin-bottom: var(--sp-2);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.8rem, 6vw, 4.8rem);
-      color: #fff;
-      margin-bottom: var(--sp-3);
-      line-height: 1.05;
-    }
-
-    .hero-desc {
-      font-size: var(--fs-md);
-      color: rgba(255,255,255,0.6);
-      max-width: 440px;
-      margin-bottom: var(--sp-4);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: var(--sp-2);
-      margin-bottom: var(--sp-4);
-      flex-wrap: wrap;
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: var(--sp-6);
-      padding-top: var(--sp-3);
-      border-top: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-xl);
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-
-    .stat-label {
-      font-size: var(--fs-xs);
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.01em;
-    }
-
-    /* ===== SECTIONS ===== */
-    .section { padding: var(--sp-16) 0; position: relative; overflow: hidden; }
-
-    .section-tag {
-      font-size: var(--fs-xs);
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: var(--sp-2);
-    }
-
-    .section-title { font-size: var(--fs-2xl); margin-bottom: var(--sp-2); }
-
-    .section-sub {
-      font-size: var(--fs-base);
-      color: var(--text-secondary);
-      font-weight: 300;
-      max-width: 460px;
-    }
-
-    .section-header { text-align: center; margin-bottom: var(--sp-8); }
-    .section-header .section-sub { margin: 0 auto; }
-
-    /* ===== PAINS ===== */
-    .pains { background: var(--ivory); }
-
-    .pains-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: var(--sp-2);
-    }
-
-    .pain-card {
-      padding: var(--sp-4) var(--sp-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      text-align: center;
-      transition: border-color var(--duration-fast) var(--ease-out),
-                  transform var(--duration-fast) var(--ease-out);
-    }
-
-    .pain-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-3px);
-    }
-
-    .pain-icon {
-      width: 44px;
-      height: 44px;
-      margin: 0 auto var(--sp-2);
-    }
-
-    .pain-icon svg {
-      width: 44px;
-      height: 44px;
-      stroke: var(--green);
-      fill: none;
-      stroke-width: 1.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .pain-card p {
-      font-size: var(--fs-sm);
-      line-height: 1.5;
-    }
-
-    .pains-note {
-      text-align: center;
-      margin-top: var(--sp-6);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-lg);
-      font-style: italic;
-      color: var(--text-secondary);
-      letter-spacing: -0.01em;
-    }
-
-    /* ===== APPROACH ===== */
-    .approach {
-      background: var(--brown);
-      color: var(--text-inverse);
-      padding: var(--sp-6) 0;
-    }
-
-    .approach .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--sp-3);
-    }
-
-    .approach-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--sp-6);
-      align-items: center;
-    }
-
-    .approach-photo { overflow: hidden; border-radius: var(--radius-md); }
-
-    .approach-photo img {
-      width: 100%;
-      height: 480px;
-      object-fit: cover;
-      object-position: center 75%;
-      display: block;
-    }
-
-    .approach-body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .approach-body .section-title { color: var(--text-inverse); margin-bottom: var(--sp-4); }
-
-    .approach-row {
-      padding: var(--sp-2) 0;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .approach-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
-
-    .approach-row h4 {
-      font-size: var(--fs-lg);
-      color: var(--cream);
-      margin-bottom: 2px;
-      font-weight: 500;
-    }
-
-    .approach-row p {
-      font-size: var(--fs-sm);
-      color: rgba(245,240,234,0.7);
-      font-weight: 300;
-    }
-
-    /* ===== FORMATS ===== */
-    .formats { background: var(--cream); }
-
-    .format-hero {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      margin-bottom: var(--sp-4);
-    }
-
-    .format-hero-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    .format-hero-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 46%;
-    }
-
-    .format-hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to right, rgba(30,25,20,0.92) 0%, rgba(30,25,20,0.75) 40%, rgba(30,25,20,0.25) 75%, rgba(30,25,20,0.1) 100%),
-        linear-gradient(to bottom, rgba(30,25,20,0.2) 0%, transparent 40%, transparent 60%, rgba(30,25,20,0.2) 100%);
-    }
-
-    .format-hero-body {
-      position: relative;
-      z-index: 1;
-      padding: var(--sp-8);
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: var(--text-inverse);
-    }
-
-    .format-badge {
-      font-size: var(--fs-xs);
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--green-light);
-      margin-bottom: var(--sp-3);
-    }
-
-    .format-hero-body h3 {
-      font-size: var(--fs-2xl);
-      color: var(--text-inverse);
-      margin-bottom: var(--sp-1);
-    }
-
-    .format-hero-body > p {
-      font-size: var(--fs-sm);
-      color: rgba(245,240,234,0.75);
-      font-weight: 300;
-      margin-bottom: var(--sp-4);
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--sp-1);
-      margin-bottom: var(--sp-4);
-    }
-
-    .tag {
-      padding: 8px 18px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius-full);
-      font-size: var(--fs-xs);
-      color: rgba(245,240,234,0.75);
-    }
-
-    .price-big {
-      margin-bottom: var(--sp-4);
-    }
-
-    .price-big strong {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-2xl);
-      font-weight: 600;
-    }
-
-    .price-big span {
-      font-size: var(--fs-sm);
-      color: rgba(245,240,234,0.65);
-      margin-left: 4px;
-    }
-
-    .format-note {
-      font-size: var(--fs-xs);
-      color: rgba(245,240,234,0.6);
-      margin-top: var(--sp-2);
-      font-weight: 300;
-    }
-
-
-    .formats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--sp-2);
-    }
-
-    .format-card {
-      padding: var(--sp-4) var(--sp-3);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--ivory);
-      transition: border-color var(--duration-fast),
-                  transform var(--duration-fast);
-    }
-
-    .format-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
-    }
-
-    .format-card-icon {
-      width: 36px;
-      height: 36px;
-      margin-bottom: var(--sp-3);
-    }
-
-    .format-card-icon svg {
-      width: 36px;
-      height: 36px;
-      stroke: var(--green);
-      fill: none;
-      stroke-width: 1.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .format-card h4 { font-size: var(--fs-lg); margin-bottom: 4px; }
-    .format-card .fc-desc { font-size: var(--fs-sm); color: var(--text-secondary); font-weight: 300; }
-    .format-card .fc-loc { font-size: var(--fs-xs); color: var(--text-secondary); margin-bottom: var(--sp-2); }
-    .format-card .fc-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-lg);
-      font-weight: 600;
-    }
-
-    /* ===== ABOUT ===== */
-    .about { background: var(--ivory); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 5fr 7fr;
-      gap: var(--sp-8);
-      align-items: start;
-    }
-
-    .about-photo { position: relative; }
-
-    .about-photo img {
-      width: 100%;
-      border-radius: var(--radius-md);
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      object-position: center 5%;
-    }
-
-    /* Abstract deco line on about photo */
-    .about-deco {
-      position: absolute;
-      bottom: -30px;
-      right: -30px;
-      width: 200px;
-      height: 200px;
-      opacity: 0.08;
-      z-index: -1;
-    }
-
-    .about { padding: var(--sp-8) 0; }
-    .about-body .section-title { margin-bottom: var(--sp-3); }
-
-    .about-text p {
-      font-size: var(--fs-base);
-      line-height: 1.8;
-      color: var(--text-secondary);
-      font-weight: 300;
-      margin-bottom: var(--sp-2);
-    }
-
-    .about-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-lg);
-      font-style: italic;
-      color: var(--text);
-      font-weight: 500;
-      margin-top: var(--sp-2);
-      margin-bottom: var(--sp-3);
-      letter-spacing: -0.01em;
-    }
-
-    .edu-label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-bottom: var(--sp-2);
-    }
-
-    .edu-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--sp-3);
-    }
-
-    .edu-item {
-      padding: var(--sp-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-    }
-
-    .edu-icon {
-      width: 18px;
-      height: 18px;
-      margin-bottom: var(--sp-1);
-    }
-
-    .edu-icon svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--green);
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .edu-item h4 { font-size: var(--fs-sm); margin-bottom: 2px; }
-    .edu-item p { font-size: var(--fs-xs); color: var(--text-secondary); font-weight: 300; line-height: 1.4; }
-
-    /* ===== REVIEWS ===== */
-    .reviews { background: var(--cream); padding: var(--sp-12) 0; }
-
-    .reviews-track-wrap { overflow: hidden; }
-
-    .reviews-track {
-      display: flex;
-      gap: var(--sp-3);
-      transition: transform var(--duration-slow) var(--ease-inout);
-    }
-
-    .review-card {
-      flex: 0 0 calc(50% - var(--sp-3) / 2);
-      padding: var(--sp-6);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--ivory);
-    }
-
-    .review-stars {
-      display: flex;
-      gap: 3px;
-      margin-bottom: var(--sp-3);
-    }
-
-    .review-stars svg {
-      width: 14px;
-      height: 14px;
-      fill: var(--green);
-    }
-
-    .review-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--fs-lg);
-      line-height: 1.55;
-      font-style: italic;
-      font-weight: 400;
-      margin-bottom: var(--sp-4);
-      letter-spacing: -0.01em;
-    }
-
-    .review-author {
-      font-size: var(--fs-sm);
-      font-weight: 500;
-    }
-
-    .reviews-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: var(--sp-6);
-    }
-
-    .dots { display: flex; gap: 6px; }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--border);
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: all var(--duration-fast);
-    }
-
-    .dot.on {
-      background: var(--green);
-      width: 24px;
-      border-radius: 4px;
-    }
-
-    .arrows { display: flex; gap: 6px; }
-
-    .arrow-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: transparent;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all var(--duration-fast);
-    }
-
-    .arrow-btn:hover { border-color: var(--green); background: var(--green); }
-    .arrow-btn:hover svg { stroke: var(--ivory); }
-
-    .arrow-btn svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--text);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* ===== FAQ ===== */
-    .faq { background: var(--brown); color: var(--text-inverse); }
-    .faq .section-title { color: var(--text-inverse); }
-
-    .faq-list { max-width: 740px; margin: 0 auto; }
-
-    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); }
-
-    .faq-q {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--sp-2);
-      padding: var(--sp-3) 0;
-      cursor: pointer;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      color: var(--cream);
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: var(--fs-base);
-      font-weight: 400;
-      transition: color var(--duration-fast);
-    }
-
-    .faq-q:hover { color: #fff; }
-
-    .faq-plus {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .faq-plus::before, .faq-plus::after {
-      content: '';
-      position: absolute;
-      background: rgba(255,255,255,0.4);
-      transition: var(--duration-fast);
-    }
-
-    .faq-plus::before { width: 14px; height: 1px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .faq-plus::after { width: 1px; height: 14px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-
-    .faq-item.open .faq-plus::after { transform: translate(-50%,-50%) rotate(90deg); opacity: 0; }
-
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s var(--ease-out);
-    }
-
-    .faq-item.open .faq-a { max-height: 180px; }
-
-    .faq-a p {
-      padding-bottom: var(--sp-3);
-      font-size: var(--fs-sm);
-      color: rgba(245,240,234,0.5);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* ===== TELEGRAM ===== */
-    .tg-section { background: var(--ivory); }
-
-    .tg-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--sp-3);
-      margin-bottom: var(--sp-6);
-    }
-
-    .tg-item { text-align: center; padding: var(--sp-4) var(--sp-2); }
-
-    .tg-circle {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background: var(--green);
-      margin: 0 auto var(--sp-3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tg-circle svg {
-      width: 28px;
-      height: 28px;
-      stroke: var(--ivory);
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .tg-item p { font-size: var(--fs-sm); line-height: 1.5; }
-
-    .tg-cta { text-align: center; }
-
-    /* ===== CONTACTS ===== */
-    .contacts { background: var(--cream); padding: var(--sp-8) 0; }
-
-    .contacts-wrap {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      min-height: 460px;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .contacts-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    .contacts-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-    }
-
-    .contacts-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(30,25,20,0.85) 0%, rgba(30,25,20,0.45) 50%, rgba(30,25,20,0.15) 100%);
-    }
-
-    .contacts-body {
-      position: relative;
-      z-index: 1;
-      padding: var(--sp-6);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      min-height: 460px;
-      color: var(--text-inverse);
-    }
-
-    .c-link {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      padding: 4px 0;
-      text-decoration: none;
-      color: var(--cream);
-      font-size: var(--fs-base);
-      transition: color var(--duration-fast);
-    }
-
-    .c-link:hover { color: #fff; }
-
-    .c-link svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--green-light);
-      fill: none;
-      stroke-width: 1.5;
-      flex-shrink: 0;
-    }
-
-    .c-location {
-      margin-top: 4px;
-      font-size: var(--fs-sm);
-      color: rgba(245,240,234,0.7);
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-    }
-
-    .c-location svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--green-light);
-      fill: none;
-      stroke-width: 1.5;
-      flex-shrink: 0;
-    }
-
-    /* ===== FOOTER ===== */
-    .footer {
-      background: var(--cream);
-      padding: var(--sp-4) 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-top { text-align: center; padding-bottom: var(--sp-4); }
-
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-links { display: flex; gap: var(--sp-3); }
-
-    .footer-links a {
-      font-size: var(--fs-sm);
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color var(--duration-fast);
-    }
-
-    .footer-links a:hover { color: var(--green); }
-
-    .footer-copy { font-size: var(--fs-xs); color: var(--text-secondary); }
-
-    /* ===== RESPONSIVE (Skill: bencium responsive — mobile-first breakpoints) ===== */
-    @media (max-width: 1024px) {
-      .hero-photo { width: 100%; }
-      .hero-photo-fade { background: linear-gradient(to top, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.55) 50%, rgba(26,26,26,0.25) 100%); }
-      .hero-buttons { flex-wrap: wrap; }
-      .hero-stats { gap: var(--sp-4); }
-      .pains-grid { grid-template-columns: repeat(3, 1fr); }
-      .approach-grid { grid-template-columns: 1fr; gap: var(--sp-4); }
-      .approach-photo img { height: auto; aspect-ratio: 16/9; }
-      .approach-body { padding: 0 var(--sp-4); }
-      .format-hero-body { padding: var(--sp-6); }
-      .format-hero-bg::after { background: linear-gradient(to bottom, rgba(30,25,20,0.8) 0%, rgba(30,25,20,0.5) 100%); }
-      .about-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
-      .contacts-wrap { min-height: 300px; }
-      .contacts-body { min-height: 300px; }
-    }
-
-    @media (max-width: 768px) {
-      .nav { display: none; }
-      .nav.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--cream);
-        padding: var(--sp-3);
-        gap: var(--sp-2);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      }
-      .mobile-toggle { display: flex; }
-      .section { padding: var(--sp-12) 0; }
-      .pains-grid { grid-template-columns: repeat(2, 1fr); }
-      .format-hero-body { padding: var(--sp-4); }
-      .formats-grid { grid-template-columns: 1fr; }
-      .about-grid { grid-template-columns: 1fr; }
-      .about-photo { max-width: 380px; }
-      .edu-grid { grid-template-columns: 1fr; }
-      .review-card { flex: 0 0 100%; }
-      .tg-grid { grid-template-columns: repeat(2, 1fr); }
-      .contacts-body { padding: var(--sp-4); }
-      .footer-bottom { flex-direction: column; gap: var(--sp-2); text-align: center; }
-    }
-
-    @media (max-width: 480px) {
-      .pains-grid { grid-template-columns: 1fr; }
-      .hero-buttons { flex-direction: column; align-items: flex-start; }
-      .hero-stats { flex-wrap: wrap; gap: var(--sp-3); }
-      .tg-grid { grid-template-columns: 1fr; }
+    /* ============ FONTS (из макета: TT Ricordi Allegria Trial + Gerbera) ============ */
+    @font-face{font-family:'TT Ricordi Allegria';src:url('fonts/TTRicordiAllegria-Light.woff') format('woff');font-weight:300;font-style:normal;font-display:swap}
+    @font-face{font-family:'TT Ricordi Allegria';src:url('fonts/TTRicordiAllegria-Regular.woff') format('woff');font-weight:400 600;font-style:normal;font-display:swap}
+    @font-face{font-family:'Gerbera';src:url('fonts/Gerbera-Light.woff') format('woff');font-weight:300;font-style:normal;font-display:swap}
+    @font-face{font-family:'Gerbera';src:url('fonts/Gerbera-Regular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+    @font-face{font-family:'Gerbera';src:url('fonts/Gerbera-Medium.woff') format('woff');font-weight:500;font-style:normal;font-display:swap}
+
+    /* ============ RESET ============ */
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    img,svg{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+    /* ============ TOKENS (точно из Figma) ============ */
+    :root{
+      --ink:#191713; --olive:#3F3B2D; --faq:#2D2D2D;
+      --green:#92964A; --green-2:#8EA377;
+      --cream:#EAE9E4; --ivory:#FAF9F6;
+      --ink-900:#1A1A1A; --ink-800:#24251F; --muted:#7A7067; --grey:#7F7F7F;
+      --taupe:#CABEAF; --white:#fff;
+      --display:'TT Ricordi Allegria','Cormorant Garamond',Georgia,serif;
+      --body:'Gerbera','Manrope',-apple-system,sans-serif;
+      --pad:64px;            /* боковой gutter, шагает по брейкпоинтам */
+      --sec:128px;           /* вертикальный padding секций */
+    }
+
+    html{scroll-behavior:smooth}
+    body{font-family:var(--body);font-weight:400;color:var(--ink-900);background:var(--ivory);-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:var(--display);font-weight:400;line-height:1}
+
+    /* контент 1152 максимум; gutter 144@1440 → 64@1024 → 24@800 → 16@375 */
+    .container{width:min(100% - 2*var(--pad),1152px);margin-inline:auto}
+    .section{padding-block:var(--sec)}
+    .tag{font-family:var(--body);font-weight:400;font-size:14px;line-height:20px;letter-spacing:1.12px;text-transform:uppercase;color:var(--green)}
+
+    /* buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--body);font-weight:500;font-size:16px;line-height:24px;letter-spacing:.32px;padding:16px 32px;border-radius:999px;transition:background .2s,transform .15s}
+    .btn:active{transform:translateY(1px)}
+    .btn--green{background:var(--green);color:var(--white)}
+    .btn--green:hover{background:#83873f}
+    .btn--dark{background:#2C2C2C;color:var(--white)}
+    .btn--dark:hover{background:#3a3a3a}
+    .btn svg{width:18px;height:18px}
+
+    /* ============ HEADER ============ */
+    .header{position:absolute;inset:0 0 auto 0;z-index:10;height:64px;display:flex;align-items:center;padding-block:12px}
+    .header .container{display:flex;align-items:center;justify-content:space-between;gap:48px}
+    .header__left{display:flex;align-items:center;gap:48px}
+    .brand{font-family:var(--display);font-size:32px;line-height:40px;color:var(--white)}
+    .nav{display:flex;gap:24px}
+    .nav a{font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--grey);transition:color .2s}
+    .nav a:hover{color:var(--white)}
+    .header .btn{padding:10px 20px;font-weight:400;font-size:14px;line-height:20px;letter-spacing:.14px}
+    .burger{display:none;margin-left:auto;width:24px;height:24px;flex-direction:column;justify-content:center;gap:5px}
+    .burger span{display:block;height:2px;background:#fff}
+
+    /* ============ HERO ============ */
+    .hero{position:relative;background:var(--ink);color:var(--white);overflow:hidden;min-height:900px}
+    .hero .container{position:relative;min-height:900px;padding-top:218px;padding-bottom:64px}
+    .hero__img{position:absolute;top:64px;right:0;width:678px;height:789px;z-index:1}
+    .hero__img img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scaleX(-1)}
+    .hero__img::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,var(--ink) 0%,rgba(25,23,19,0) 16%)}
+    .hero__col{position:relative;z-index:3;display:flex;flex-direction:column;gap:48px;max-width:627px}
+    .hero__top{display:flex;flex-direction:column;gap:24px}
+    .hero__tags{display:flex;align-items:center;gap:12px}
+    .hero__tags .dot{width:6px;height:6px;border-radius:50%;background:rgba(146,150,74,.32)}
+    .hero h1{font-size:72px;line-height:64px;color:var(--white)}
+    .hero__lead{font-family:var(--body);font-weight:300;font-size:18px;line-height:28px;letter-spacing:.36px;color:var(--grey)}
+    .hero__cta{display:flex;gap:16px}
+    .hero__stats{display:flex;gap:48px}
+    .hero__stats .num{font-family:var(--display);font-size:32px;line-height:40px;color:var(--white)}
+    .hero__stats .lbl{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--grey)}
+
+    /* ============ PAINS ============ */
+    .pains{background:var(--cream)}
+    .pains .container{display:flex;flex-direction:column;align-items:center;gap:64px;text-align:center}
+    .pains__head{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .pains h2{font-size:40px;line-height:48px;color:var(--ink-800)}
+    .pains__row{display:flex;gap:24px;width:100%;justify-content:center}
+    .pain{flex:1;max-width:211px;display:flex;flex-direction:column;align-items:center;gap:24px}
+    .pain img{height:48px;width:auto}
+    .pain p{font-family:var(--body);font-weight:300;font-size:16px;line-height:24px;letter-spacing:.32px;color:var(--ink-900)}
+    .pains__note{font-family:var(--display);font-size:20px;line-height:28px;color:var(--muted)}
+
+    /* ============ APPROACH ============ */
+    .approach{background:var(--olive);color:var(--white)}
+    .approach .container{display:grid;grid-template-columns:552px 552px;justify-content:space-between;gap:48px;align-items:center}
+    .approach__photo{border-radius:4px;overflow:hidden;width:552px;height:616px}
+    .approach__photo img{width:100%;height:100%;object-fit:cover}
+    .approach__body{display:flex;flex-direction:column;gap:40px}
+    .approach__head{display:flex;flex-direction:column;gap:8px}
+    .approach h2{font-size:40px;line-height:48px;color:var(--white)}
+    .approach__list{display:flex;flex-direction:column}
+    .approach__item{padding-block:16px}
+    .approach__item+.approach__item{border-top:1px solid rgba(255,255,255,.14)}
+    .approach__item h3{font-family:var(--display);font-size:24px;line-height:32px;letter-spacing:.96px;color:var(--white);margin-bottom:4px}
+    .approach__item p{font-family:var(--body);font-weight:300;font-size:16px;line-height:24px;letter-spacing:.32px;color:rgba(255,255,255,.4)}
+
+    /* ============ ABOUT ============ */
+    .about{background:var(--ivory)}
+    .about .container{display:flex;flex-direction:column;gap:64px}
+    .about__row{display:grid;grid-template-columns:552px 535px;justify-content:space-between;gap:48px;position:relative}
+    .about__body{display:flex;flex-direction:column;gap:32px}
+    .about__head{display:flex;flex-direction:column;gap:8px}
+    .about h2{font-size:40px;line-height:48px;color:var(--ink-800)}
+    .about__body p{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+    .about__edu{display:flex;flex-direction:column;gap:16px;margin-top:2px}
+    .edu-list{display:flex;flex-direction:column;gap:16px}
+    .edu-item h4{font-family:var(--display);font-size:20px;line-height:28px;color:var(--ink-900)}
+    .edu-item span{font-family:var(--body);font-weight:300;font-size:12px;line-height:16px;color:var(--muted)}
+    .about__media{position:relative;width:535px}
+    .about__photo{width:535px;height:619px;border-radius:4px;overflow:hidden;background:#000}
+    .about__photo img{width:100%;height:100%;object-fit:cover}
+    .about__bowl{position:absolute;left:-36px;bottom:30px;width:219px;height:257px;border-radius:4px;overflow:hidden}
+    .about__bowl img{width:100%;height:100%;object-fit:cover}
+    .about__quote{font-family:var(--display);font-size:32px;line-height:40px;color:var(--green);text-align:center;max-width:1048px;margin-inline:auto}
+
+    /* ============ FORMATS ============ */
+    .formats{background:var(--cream)}
+    .formats .container{display:flex;flex-direction:column;gap:128px}
+    .formats__main{display:flex;flex-direction:column;gap:64px}
+    .formats__head{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+    .formats h2{font-size:40px;line-height:48px;color:var(--ink-900)}
+    .formats__sub{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+    .formats__cards{display:flex;flex-direction:column;gap:16px}
+
+    .featured{position:relative;border-radius:4px;overflow:hidden;color:var(--white);min-height:500px;display:flex;align-items:center;padding:64px 48px}
+    .featured__bg{position:absolute;inset:0;z-index:0}
+    .featured__bg img{width:100%;height:100%;object-fit:cover}
+    .featured__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(25,23,19,.88) 0%,rgba(25,23,19,.7) 45%,rgba(25,23,19,.15) 100%)}
+    .featured__in{position:relative;z-index:1;width:649px;max-width:100%;display:flex;flex-direction:column;gap:32px}
+    .featured__t{display:flex;flex-direction:column;gap:8px}
+    .featured h3{font-family:var(--display);font-size:40px;line-height:48px;color:var(--white)}
+    .featured__sub{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--taupe)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:rgba(255,255,255,.12);border-radius:999px;padding:10px 20px;font-size:14px;line-height:20px;letter-spacing:.14px}
+    .featured__price{display:flex;align-items:flex-end;gap:4px}
+    .featured__price .amt{font-family:var(--display);font-size:40px;line-height:48px;color:var(--white)}
+    .featured__price .per{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;color:var(--taupe);padding-bottom:4px}
+    .featured__buy{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+    .featured__note{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--taupe)}
+
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .plan{background:var(--ivory);border:1px solid rgba(122,112,103,.12);border-radius:4px;padding:32px 32px 40px;display:flex;flex-direction:column;gap:32px}
+    .plan__t{display:flex;flex-direction:column;gap:16px}
+    .plan img{height:48px;width:auto}
+    .plan__name{display:flex;flex-direction:column;gap:4px}
+    .plan h3{font-family:var(--display);font-size:32px;line-height:40px;color:var(--ink-800)}
+    .plan__desc{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+    .plan__meta{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+    .plan__price{font-family:var(--display);font-size:20px;line-height:28px;color:var(--ink-800)}
+    .plan__loc{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+
+    .formats__photo{width:100%;height:571px;border-radius:4px;overflow:hidden}
+    .formats__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+
+    /* ============ TESTIMONIALS ============ */
+    .reviews{display:flex;flex-direction:column;gap:64px}
+    .reviews__head{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+    .reviews h2{font-size:40px;line-height:48px;color:var(--ink-800)}
+    .reviews__body{display:flex;flex-direction:column;gap:32px}
+    .reviews__cards{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .review{background:var(--ivory);border:1px solid rgba(122,112,103,.12);border-radius:4px;padding:32px;display:flex;flex-direction:column;gap:32px}
+    .review p{font-family:var(--body);font-weight:300;font-size:16px;line-height:24px;letter-spacing:.32px;color:var(--ink-800)}
+    .review .who{font-family:var(--body);font-weight:500;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--ink-800)}
+    .reviews__nav{display:flex;align-items:center;justify-content:space-between}
+    .dots{display:flex;gap:6px}
+    .dots i{display:block;width:8px;height:8px;border-radius:4px;background:#D7D5CD}
+    .dots i.on{width:24px;background:var(--ink-800)}
+    .arrows{display:flex;gap:8px}
+    .arrows button{width:40px;height:40px;border-radius:999px;background:#E4DCD2;display:flex;align-items:center;justify-content:center;color:var(--ink-800)}
+    .arrows svg{width:16px;height:16px}
+
+    /* ============ FAQ ============ */
+    .faq{position:relative;background:var(--faq);color:var(--white);overflow:hidden}
+    /* фон фиксированной высоты — не пересчитывается при раскрытии аккордеона (нет «прыжка») */
+    .faq__bg{position:absolute;top:0;left:0;width:100%;height:1800px;z-index:0}
+    .faq__bg img{width:100%;height:100%;object-fit:cover;object-position:center top}
+    .faq__bg::after{content:"";position:absolute;inset:0;background:rgba(28,28,24,.78)}
+    .faq .container{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:40px}
+    .faq__badge{background:rgba(146,150,74,.6);border-radius:69px;padding:8px 16px;font-family:var(--display);font-size:40px;line-height:48px;color:#F5F0EA}
+    .faq__list{width:720px;max-width:100%}
+    .faq__item{border-bottom:1px solid rgba(255,255,255,.14)}
+    .faq__item summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:32px;font-family:var(--body);font-weight:300;font-size:24px;line-height:28px;letter-spacing:.48px;color:var(--white)}
+    .faq__item summary::-webkit-details-marker{display:none}
+    .faq__ico{flex:none;position:relative;width:24px;height:24px}
+    .faq__ico::before,.faq__ico::after{content:"";position:absolute;background:#fff;left:50%;top:50%;transform:translate(-50%,-50%)}
+    .faq__ico::before{width:14px;height:2px}
+    .faq__ico::after{width:2px;height:14px;transition:transform .25s}
+    .faq__item[open] .faq__ico::after{transform:translate(-50%,-50%) scaleY(0)}
+    .faq__ans{font-family:var(--body);font-weight:300;font-size:16px;line-height:24px;color:rgba(255,255,255,.7);padding:0 0 32px;max-width:600px}
+
+    /* ============ TELEGRAM ============ */
+    .tg{background:var(--ivory);--sec:64px}
+    .tg .container{display:flex;flex-direction:column;align-items:center;gap:48px;text-align:center}
+    .tg__head{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .tg h2{font-size:40px;line-height:48px;color:var(--ink-900)}
+    .tg__sub{font-family:var(--body);font-weight:300;font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+    .tg__grid{display:flex;gap:48px;justify-content:center}
+    .tg__item{width:183px;display:flex;flex-direction:column;align-items:center;gap:24px}
+    .tg__item img{height:48px;width:auto}
+    .tg__item p{font-family:var(--body);font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--ink-900)}
+    .tg__contacts{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .tg__row{display:flex;gap:32px;align-items:center}
+    .tg__c{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-weight:300;font-size:16px;line-height:24px;letter-spacing:.32px;color:var(--ink-800)}
+    .tg__c.sm{font-weight:400;font-size:14px;line-height:20px;letter-spacing:.14px}
+    .tg__c svg{width:18px;height:18px;color:var(--green-2)}
+
+    /* ============ FOOTER ============ */
+    .footer{background:var(--cream);padding-block:32px}
+    .footer .container{display:flex;align-items:center;justify-content:space-between}
+    .footer__links{display:flex;gap:32px}
+    .footer a,.footer__copy{font-family:var(--body);font-size:14px;line-height:20px;letter-spacing:.14px;color:var(--muted)}
+    .footer a:hover{color:var(--ink-900)}
+
+    /* ==================== TABLET ≤1023 ==================== */
+    @media(max-width:1023px){
+      :root{--pad:24px;--sec:96px}
+      .approach .container{grid-template-columns:1fr;gap:40px}
+      .approach__photo{width:100%;height:auto;aspect-ratio:752/420}
+      .about__row{grid-template-columns:1fr;gap:40px}
+      .about__media{width:100%;max-width:535px}
+      .about__photo{width:100%;height:auto;aspect-ratio:535/619}
+      .featured{padding:48px 40px}
+      .tg__grid{flex-wrap:wrap;gap:40px 48px}
+      .hero .container{min-height:0;padding-top:172px;padding-bottom:64px}
+      .hero__img{width:46%;max-width:480px;height:auto;aspect-ratio:678/789}
+    }
+    /* ==================== MOBILE ≤799 ==================== */
+    @media(max-width:799px){
+      :root{--pad:16px;--sec:72px}
+      .nav,.header .btn{display:none}
+      .burger{display:flex}
+      .hero{min-height:0}
+      .hero .container{min-height:0;padding-top:32px;padding-bottom:8px}
+      .hero__img{position:relative;top:0;width:100%;max-width:none;height:340px;aspect-ratio:auto}
+      .hero__img img{object-position:50% 18%}
+      .hero__img::before{background:linear-gradient(180deg,rgba(25,23,19,.05) 0%,var(--ink) 96%)}
+      .hero__col{max-width:none;gap:40px}
+      .hero h1{font-size:44px;line-height:44px}
+      .hero__cta{flex-direction:column;align-items:stretch}
+      .hero__stats{gap:24px;justify-content:space-between}
+
+      .pains__row{flex-wrap:wrap;gap:32px 16px}
+      .pain{flex:0 0 calc(50% - 8px);max-width:none}
+      .pain:nth-child(5){flex-basis:100%}
+
+      .approach__photo{aspect-ratio:343/360}
+      .formats .container{gap:80px}
+      .featured{padding:32px 24px}
+      .featured__bg::after{background:linear-gradient(180deg,rgba(25,23,19,.5),rgba(25,23,19,.9))}
+      .featured__in{width:100%;gap:24px}
+      .featured h3,.featured__price .amt,.formats h2,.about h2,.approach h2,.tg h2,.reviews h2,.faq__badge{font-size:32px;line-height:38px}
+      .plans{grid-template-columns:1fr}
+      .formats__photo{height:auto;aspect-ratio:343/300}
+      .reviews__cards{grid-template-columns:1fr}
+      .faq__item summary{font-size:20px;line-height:26px}
+      .tg__grid{flex-wrap:wrap}
+      .tg__item{width:calc(50% - 24px)}
+      .tg__row{flex-direction:column;gap:12px}
+      .footer .container{flex-direction:column;gap:16px;text-align:center}
     }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-  <header class="header" id="header">
+  <header class="header">
     <div class="container">
-      <a href="#" class="logo">Stasyia Yoga</a>
-      <nav class="nav" id="nav">
-        <a href="#practices" class="nav-link">Практики</a>
-        <a href="#about" class="nav-link">Обо мне</a>
-        <a href="#reviews" class="nav-link">Отзывы</a>
-        <a href="#contacts" class="nav-link">Контакты</a>
-        <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="btn btn-primary nav-cta">Записаться</a>
-      </nav>
-      <button class="mobile-toggle" id="menuBtn" aria-label="Открыть меню" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="header__left">
+        <a href="#" class="brand">Stasyia Yoga</a>
+        <nav class="nav">
+          <a href="#formats">Практики</a><a href="#about">Обо мне</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a>
+        </nav>
+      </div>
+      <a href="#formats" class="btn btn--green">Записаться</a>
+      <button class="burger" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="hero" aria-label="Hero">
-    <div class="hero-photo">
-      <img src="Teacher_1.jpg" alt="Анастасия — учитель йоги" width="853" height="1280">
-      <div class="hero-photo-fade" aria-hidden="true"></div>
-    </div>
+  <section class="hero">
     <div class="container">
-      <div class="hero-content">
-        <div class="hero-tag reveal">Йога &middot; Медитация &middot; Восстановление</div>
-        <h1 class="reveal reveal-delay-1">Йога для тех, кто работает головой</h1>
-        <p class="hero-desc reveal reveal-delay-2">Онлайн-практики для IT-специалистов. Здоровая спина, ясный фокус, устойчивая нервная система.</p>
-        <div class="hero-buttons reveal reveal-delay-3">
-          <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="btn btn-primary">Попробовать бесплатно</a>
-          <a href="#practices" class="btn btn-ghost">Узнать больше</a>
+      <div class="hero__img">
+        <picture>
+          <source type="image/webp" srcset="img/hero-678.webp 678w, img/hero-853.webp 853w" sizes="(max-width:799px) 100vw, 678px">
+          <img src="img/hero-853.jpg" srcset="img/hero-678.jpg 678w, img/hero-853.jpg 853w" sizes="(max-width:799px) 100vw, 678px" alt="Анастасия в практике йоги" fetchpriority="high" width="853" height="993">
+        </picture>
+      </div>
+      <div class="hero__col">
+        <div class="hero__top">
+          <div class="hero__tags">
+            <span class="tag">Йога</span><span class="dot"></span>
+            <span class="tag">Медитация</span><span class="dot"></span>
+            <span class="tag">Восстановление</span>
+          </div>
+          <h1>Йога&nbsp;для тех, кто<br>работает головой</h1>
+          <p class="hero__lead">Онлайн-практики для IT-специалистов. Здоровая спина, ясный фокус, устойчивая нервная система.</p>
         </div>
-        <div class="hero-stats reveal reveal-delay-4">
-          <div>
-            <div class="stat-number">500+</div>
-            <div class="stat-label">учеников</div>
-          </div>
-          <div>
-            <div class="stat-number">6 лет</div>
-            <div class="stat-label">опыта</div>
-          </div>
-          <div>
-            <div class="stat-number">3</div>
-            <div class="stat-label">корп. клиента</div>
-          </div>
+        <div class="hero__cta">
+          <a href="#formats" class="btn btn--green">Попробовать бесплатно</a>
+          <a href="#approach" class="btn btn--dark">Узнать больше</a>
+        </div>
+        <div class="hero__stats">
+          <div><div class="num">500+</div><div class="lbl">учеников</div></div>
+          <div><div class="num">6 лет</div><div class="lbl">опыта</div></div>
+          <div><div class="num">3</div><div class="lbl">корп. клиента</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PAIN POINTS -->
-  <section class="section pains" aria-label="Боли">
+  <!-- PAINS -->
+  <section class="section pains">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">Знакомо?</div>
-        <h2 class="section-title">После 6 часов за компьютером</h2>
+      <div class="pains__head">
+        <span class="tag">Знакомо?</span>
+        <h2>После 6 часов за компьютером</h2>
       </div>
-      <div class="pains-grid">
-        <div class="pain-card reveal">
-          <div class="pain-icon"><svg viewBox="0 0 44 44"><circle cx="22" cy="11" r="5"/><path d="M12 21c0-3 3-6 10-6s10 3 10 6v4H12z"/><path d="M16 30v3m12-3v3"/><path d="M18 19l-2-3m10 3l2-3"/></svg></div>
-          <p>Шея и плечи каменные к вечеру</p>
-        </div>
-        <div class="pain-card reveal reveal-delay-1">
-          <div class="pain-icon"><svg viewBox="0 0 44 44"><path d="M22 6v32"/><path d="M14 14c0 0 3 6 8 6s8-6 8-6"/><path d="M14 24c0 0 3 6 8 6s8-6 8-6"/></svg></div>
-          <p>Поясница ноет после рабочего дня</p>
-        </div>
-        <div class="pain-card reveal reveal-delay-2">
-          <div class="pain-icon"><svg viewBox="0 0 44 44"><circle cx="22" cy="18" r="10"/><path d="M18 16h.01M26 16h.01"/><path d="M17 22c1 2 3 3 5 3s4-1 5-3"/><path d="M14 32l-2 6m18-6l2 6"/></svg></div>
-          <p>Голова перегружена, сложно сфокусироваться</p>
-        </div>
-        <div class="pain-card reveal reveal-delay-3">
-          <div class="pain-icon"><svg viewBox="0 0 44 44"><path d="M28 8a10 10 0 1 0 0 20 10 10 0 0 1-10-10 10 10 0 0 1 10-10z"/><path d="M33 6l1.5-2M36 12h3M34 18l2 1.5"/></svg></div>
-          <p>Тело устало, но заснуть не получается</p>
-        </div>
-        <div class="pain-card reveal reveal-delay-4">
-          <div class="pain-icon"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="12"/><circle cx="22" cy="22" r="4"/><path d="M22 10v8m0 8v8M10 22h8m8 0h8"/></svg></div>
-          <p>Хочется расслабиться, но не понятно как</p>
-        </div>
+      <div class="pains__row">
+        <div class="pain"><img src="img/icons/pain1.svg" alt=""><p>Шея и плечи каменные к вечеру</p></div>
+        <div class="pain"><img src="img/icons/pain2.svg" alt=""><p>Поясница ноет после рабочего дня</p></div>
+        <div class="pain"><img src="img/icons/pain3.svg" alt=""><p>Голова перегружена, сложно сфокусироваться</p></div>
+        <div class="pain"><img src="img/icons/pain4.svg" alt=""><p>Тело устало, но заснуть не получается</p></div>
+        <div class="pain"><img src="img/icons/pain5.svg" alt=""><p>Хочется расслабиться, но не понятно как</p></div>
       </div>
-      <p class="pains-note reveal">Это тело дает нам сигнал, что пора обратить на него внимание</p>
+      <p class="pains__note">Это тело дает нам сигнал, что пора обратить на него внимание</p>
     </div>
   </section>
 
   <!-- APPROACH -->
-  <section class="approach" id="practices">
+  <section class="section approach" id="approach">
     <div class="container">
-      <div class="approach-grid">
-        <div class="approach-photo reveal">
-          <img src="Teacher_3.jpg" alt="Практика йоги" width="560" height="700">
-        </div>
-        <div class="approach-body">
-          <div class="section-tag reveal" style="color:var(--green-light)">Подход</div>
-          <h2 class="section-title reveal">Практика по вашим запросам</h2>
-          <div class="approach-row reveal"><h4>Для сидячей работы</h4><p>Учитывают часы за экраном, акцент на плечевом поясе, укрепляем мышцы спины</p></div>
-          <div class="approach-row reveal reveal-delay-1"><h4>Понятно и просто</h4><p>Рассказываю и показываю, делая с вами</p></div>
-          <div class="approach-row reveal reveal-delay-2"><h4>Любой уровень</h4><p>Даже если никогда не занимались, идём от простого к сложному</p></div>
-          <div class="approach-row reveal reveal-delay-3"><h4>Тело + нервная система</h4><p>Работаем с телом, разгружаем голову, практики медитации и дыхательные техники</p></div>
-        </div>
+      <div class="approach__photo">
+        <picture>
+          <source type="image/webp" srcset="img/approach-552.webp 552w, img/approach-960.webp 960w" sizes="(max-width:1023px) 90vw, 552px">
+          <img src="img/approach-960.jpg" srcset="img/approach-552.jpg 552w, img/approach-960.jpg 960w" sizes="(max-width:1023px) 90vw, 552px" alt="Групповая практика" width="960" height="1072" loading="lazy">
+        </picture>
       </div>
-    </div>
-  </section>
-
-  <!-- FORMATS -->
-  <section class="section formats" id="formats">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">Форматы</div>
-        <h2 class="section-title">Выбери свой формат</h2>
-        <p class="section-sub">Начните с бесплатного занятия</p>
-      </div>
-      <div class="format-hero reveal">
-        <div class="format-hero-bg">
-          <img src="Group_teacher.jpg" alt="Групповое занятие" width="720" height="1280">
+      <div class="approach__body">
+        <div class="approach__head">
+          <span class="tag">Подход</span>
+          <h2>Практика по вашим запросам</h2>
         </div>
-        <div class="format-hero-body">
-          <div class="format-badge">Лучший старт</div>
-          <h3>Онлайн-группа</h3>
-          <p>Утренние практики для тех, кто работает удалённо</p>
-          <div class="tag-row">
-            <span class="tag">Пн и Пт 08:00-09:00</span>
-            <span class="tag">Записи месяц</span>
-            <span class="tag">Telegram-чат</span>
-            <span class="tag">Обратная связь</span>
-          </div>
-          <div class="price-big"><strong>4 444 &#8381;</strong><span>/ месяц</span></div>
-          <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="btn btn-primary">Попробовать бесплатно</a>
-          <p class="format-note">Первое занятие — в подарок.</p>
-        </div>
-      </div>
-      <div class="formats-grid">
-        <div class="format-card reveal">
-          <div class="format-card-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="12" r="6"/><path d="M8 32c0-5.5 4.5-10 10-10s10 4.5 10 10"/></svg></div>
-          <h4>Персональные</h4>
-          <p class="fc-desc">Индивидуальная программа</p>
-          <p class="fc-loc">Онлайн / офлайн СПб</p>
-          <div class="fc-price">от 3 000 &#8381;</div>
-        </div>
-        <div class="format-card reveal reveal-delay-1">
-          <div class="format-card-icon"><svg viewBox="0 0 36 36"><circle cx="12" cy="12" r="5"/><circle cx="24" cy="12" r="5"/><path d="M4 32c0-5 3.5-9 8-9s8 4 8 9m-4 0c0-5 3.5-9 8-9s8 4 8 9"/></svg></div>
-          <h4>Парная йога</h4>
-          <p class="fc-desc">Вдвоём с партнёром</p>
-          <p class="fc-loc">Офлайн СПб</p>
-          <div class="fc-price">от 4 000 &#8381;</div>
-        </div>
-        <div class="format-card reveal reveal-delay-2">
-          <div class="format-card-icon"><svg viewBox="0 0 36 36"><rect x="4" y="4" width="28" height="28" rx="4"/><circle cx="12" cy="14" r="3"/><circle cx="24" cy="14" r="3"/><circle cx="18" cy="24" r="3"/></svg></div>
-          <h4>Для команд</h4>
-          <p class="fc-desc">Корпоративные занятия</p>
-          <p class="fc-loc">Онлайн / выезд</p>
-          <div class="fc-price">По запросу</div>
+        <div class="approach__list">
+          <div class="approach__item"><h3>Для сидячей работы</h3><p>Учитывают часы за экраном, акцент на плечевом поясе, укрепляем мышцы спины</p></div>
+          <div class="approach__item"><h3>Понятно и просто</h3><p>Рассказываю и показываю, делая с вами</p></div>
+          <div class="approach__item"><h3>Любой уровень</h3><p>Даже если никогда не занимались, идём от простого к сложному</p></div>
+          <div class="approach__item"><h3>Тело + нервная система</h3><p>Работаем с телом, разгружаем голову, практики медитации и дыхательные техники</p></div>
         </div>
       </div>
     </div>
@@ -1269,262 +363,200 @@
   <!-- ABOUT -->
   <section class="section about" id="about">
     <div class="container">
-      <div class="about-grid">
-        <div class="about-photo reveal">
-          <img src="Teacher_5.jpg" alt="Анастасия" width="420" height="560">
-          <svg class="about-deco" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-            <ellipse cx="100" cy="100" rx="90" ry="50" stroke="#6B7B5A" stroke-width="0.8"/>
-            <ellipse cx="100" cy="100" rx="60" ry="80" stroke="#6B7B5A" stroke-width="0.6"/>
-          </svg>
-        </div>
-        <div class="about-body">
-          <div class="section-tag reveal">Обо мне</div>
-          <h2 class="section-title reveal">Намасте, я Анастасия</h2>
-          <div class="about-text reveal">
-            <p>Знаю по себе, что такое сидячая работа — 9 лет с больной шеей, тревожностью и спиной в виде вопросительного знака. В 2017 встретила своего учителя, и жизнь разделилась на до и после. Преподаю йогу 6 лет, придерживаюсь вегетарианства более 15 лет. Через мои практики прошли 500+ человек — от новичков до тех, кто годами жил с хронической болью.</p>
-            <p>Работаю с людьми умственного труда: разработчиками, дизайнерами, бухгалтерами, аналитиками, предпринимателями. С теми, кто проводит часы за экраном и забывает, что у них есть тело.</p>
+      <div class="about__row">
+        <div class="about__body">
+          <div class="about__head">
+            <span class="tag">Обо мне</span>
+            <h2>Намасте, я Анастасия</h2>
           </div>
-          <p class="about-quote reveal">Практика йоги — это не про стойку на голове, а про искреннюю встречу с собой и безусловную любовь к телу и душе.</p>
-          <div class="edu-label reveal">Образование</div>
-          <div class="edu-grid reveal">
-            <div class="edu-item">
-              <div class="edu-icon"><svg viewBox="0 0 20 20"><path d="M10 2L1 7l9 5 7-3.8V14h2V7L10 2z"/><path d="M4 10.5v3.5l6 3.5 6-3.5V10.5L10 14l-6-3.5z"/></svg></div>
-              <h4>Хатха-йога</h4><p>Generation Yoga School, 100+ часов</p>
+          <p>Знаю по себе, что такое сидячая работа — 9 лет с больной шеей, тревожностью и спиной в виде вопросительного знака. В 2017 встретила своего учителя, и жизнь разделилась на до и после. Преподаю йогу 6 лет, придерживаюсь вегетарианства более 15 лет. Через мои практики прошли 500+ человек — от новичков до тех, кто годами жил с хронической болью.</p>
+          <p>Работаю с людьми умственного труда: разработчиками, дизайнерами, бухгалтерами, аналитиками, предпринимателями. С теми, кто проводит часы за экраном и забывает, что у них есть тело.</p>
+          <div class="about__edu">
+            <span class="tag" style="color:#92964C">Образование</span>
+            <div class="edu-list">
+              <div class="edu-item"><h4>Хатха-йога</h4><span>Generation Yoga School, 100+ часов</span></div>
+              <div class="edu-item"><h4>Тайский йога-массаж</h4><span>Обучение в Ришикеше, Индия</span></div>
+              <div class="edu-item"><h4>Access Bars</h4><span>Сертификация. Работа со стрессом</span></div>
             </div>
-            <div class="edu-item">
-              <div class="edu-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M10 5v5l3 2"/></svg></div>
-              <h4>Тайский йога-массаж</h4><p>Обучение в Ришикеше, Индия</p>
-            </div>
-            <div class="edu-item">
-              <div class="edu-icon"><svg viewBox="0 0 20 20"><path d="M10 1l2.5 5.5H18l-4.5 3.5 1.7 5.5L10 12.5 4.8 15.5l1.7-5.5L2 6.5h5.5z"/></svg></div>
-              <h4>Access Bars</h4><p>Сертификация. Работа со стрессом</p>
-            </div>
+          </div>
+        </div>
+        <div class="about__media">
+          <div class="about__photo">
+            <picture>
+              <source type="image/webp" srcset="img/about-535.webp 535w, img/about-1070.webp 1070w" sizes="(max-width:1023px) 90vw, 535px">
+              <img src="img/about-1070.jpg" srcset="img/about-535.jpg 535w, img/about-1070.jpg 1070w" sizes="(max-width:1023px) 90vw, 535px" alt="Анастасия" width="1070" height="1382" loading="lazy">
+            </picture>
+          </div>
+          <div class="about__bowl">
+            <picture>
+              <source type="image/webp" srcset="img/about-bowl-219.webp 219w, img/about-bowl-438.webp 438w" sizes="219px">
+              <img src="img/about-bowl-438.jpg" srcset="img/about-bowl-219.jpg 219w, img/about-bowl-438.jpg 438w" sizes="219px" alt="Поющая чаша" width="219" height="257" loading="lazy">
+            </picture>
           </div>
         </div>
       </div>
+      <p class="about__quote">Практика йоги — это не про стойку на голове, а про искреннюю встречу с собой и безусловную любовь к телу и душе.</p>
     </div>
   </section>
 
-  <!-- REVIEWS -->
-  <section class="section reviews" id="reviews">
+  <!-- FORMATS -->
+  <section class="section formats" id="formats">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">Отзывы</div>
-        <h2 class="section-title">Отзывы от практикующих</h2>
-        <p class="section-sub">Реальные отзывы от реальных людей</p>
-      </div>
-      <div class="reviews-track-wrap">
-        <div class="reviews-track" id="rTrack">
-          <div class="review-card">
-            <div class="review-stars"><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg></div>
-            <p class="review-text">Анастасия чудесная девушка и прекрасный тренер. Результаты видны буквально с первого занятия — перестала болеть спина, улучшился эмоциональный фон. По-человечески очень приятная, спокойная, участливая.</p>
-            <div class="review-author">Виктория</div>
+      <div class="formats__main">
+        <div class="formats__head">
+          <span class="tag" style="color:#92964C">Форматы</span>
+          <h2>Выбери свой формат</h2>
+          <p class="formats__sub">Начните с бесплатного занятия</p>
+        </div>
+        <div class="formats__cards">
+          <div class="featured">
+            <div class="featured__bg">
+              <picture>
+                <source type="image/webp" srcset="img/group-1152.webp 1152w, img/group-1440.webp 1440w" sizes="(max-width:1199px) 100vw, 1152px">
+                <img src="img/group-1440.jpg" srcset="img/group-1152.jpg 1152w, img/group-1440.jpg 1440w" sizes="(max-width:1199px) 100vw, 1152px" alt="Групповое занятие на природе" width="1440" height="597" loading="lazy">
+              </picture>
+            </div>
+            <div class="featured__in">
+              <div class="featured__t">
+                <span class="tag" style="color:#92964C">Лучший старт</span>
+                <h3>Онлайн-группа</h3>
+                <p class="featured__sub">Утренние практики для тех, кто работает удалённо</p>
+              </div>
+              <div class="chips">
+                <span class="chip">Пн. и Пт. 08:00 – 09:00</span>
+                <span class="chip">Telegram-чат</span>
+                <span class="chip">Обратная связь</span>
+              </div>
+              <div class="featured__price"><span class="amt">4 444 ₽</span><span class="per">/ месяц</span></div>
+              <div class="featured__buy">
+                <a href="#" class="btn btn--green">Попробовать бесплатно</a>
+                <span class="featured__note">Первое занятие — в подарок.</span>
+              </div>
+            </div>
           </div>
-          <div class="review-card">
-            <div class="review-stars"><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg></div>
-            <p class="review-text">Занимаюсь больше года. Ушла зажатость в позвоночнике, которая мучила годами. Анастасия чувствует каждого ученика и подбирает нагрузку индивидуально даже в группе.</p>
-            <div class="review-author">Александр</div>
-          </div>
-          <div class="review-card">
-            <div class="review-stars"><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg></div>
-            <p class="review-text">Твои практики — возможность замедлиться и почувствовать тело. После каждого занятия — заряд лёгкости на весь день. Самый лучший йожный тичер!</p>
-            <div class="review-author">Ксения</div>
-          </div>
-          <div class="review-card">
-            <div class="review-stars"><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg><svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.8 1 5.4L8 12.5 2.9 15l1-5.4L0 5.8 5.5 5z"/></svg></div>
-            <p class="review-text">Вы первый человек, который даёт мне расслабление. После практик меньше тревожит шея. Наконец-то нашла своего преподавателя.</p>
-            <div class="review-author">Марина</div>
+          <div class="plans">
+            <div class="plan">
+              <div class="plan__t">
+                <img src="img/icons/fmt-personal.svg" alt="">
+                <div class="plan__name"><h3>Персональные</h3><span class="plan__desc">Индивидуальная программа</span></div>
+              </div>
+              <div class="plan__meta"><span class="plan__price">от 3 000 ₽</span><span class="plan__loc">Онлайн / офлайн СПб</span></div>
+            </div>
+            <div class="plan">
+              <div class="plan__t">
+                <img src="img/icons/fmt-pair.svg" alt="">
+                <div class="plan__name"><h3>Парная йога</h3><span class="plan__desc">Вдвоём с партнёром</span></div>
+              </div>
+              <div class="plan__meta"><span class="plan__price">от 4 000 ₽</span><span class="plan__loc">Офлайн СПб</span></div>
+            </div>
+            <div class="plan">
+              <div class="plan__t">
+                <img src="img/icons/fmt-team.svg" alt="">
+                <div class="plan__name"><h3>Для команд</h3><span class="plan__desc">Корпоративные занятия</span></div>
+              </div>
+              <div class="plan__meta"><span class="plan__price">По запросу</span><span class="plan__loc">Онлайн / выезд</span></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="reviews-nav">
-        <div class="dots"></div>
-        <div class="arrows">
-          <button class="arrow-btn" id="rPrev" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button class="arrow-btn" id="rNext" aria-label="Вперёд"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+
+      <div class="formats__photo">
+        <picture>
+          <source type="image/webp" srcset="img/lesson-853.webp 853w" sizes="(max-width:1199px) 100vw, 1152px">
+          <img src="img/lesson-853.jpg" alt="Практика йоги" width="853" height="423" loading="lazy">
+        </picture>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div class="reviews" id="reviews">
+        <div class="reviews__head">
+          <span class="tag">Отзывы</span>
+          <h2>Что говорят, практикующие</h2>
+        </div>
+        <div class="reviews__body">
+          <div class="reviews__cards">
+            <div class="review">
+              <p>Анастасия чудесная девушка и прекрасный тренер. Результаты видны буквально с первого занятия — перестала болеть спина, улучшился эмоциональный фон. По-человечески очень приятная, спокойная, участливая.</p>
+              <div class="who">Виктория</div>
+            </div>
+            <div class="review">
+              <p>Занимаюсь больше года. Ушла зажатость в позвоночнике, которая мучила годами. Анастасия чувствует каждого ученика и подбирает нагрузку индивидуально даже в группе.</p>
+              <div class="who">Александр</div>
+            </div>
+          </div>
+          <div class="reviews__nav">
+            <div class="dots"><i class="on"></i><i></i><i></i></div>
+            <div class="arrows">
+              <button aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 5-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="section faq" aria-label="FAQ">
+  <section class="section faq">
+    <div class="faq__bg">
+      <picture>
+        <source type="image/webp" srcset="img/faq-bg-602.webp">
+        <img src="img/faq-bg-602.jpg" alt="" width="602" height="802" loading="lazy">
+      </picture>
+    </div>
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag" style="color:var(--green-light)">Вопросы</div>
-        <h2 class="section-title">Частые вопросы</h2>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Никогда не занимался йогой — мне подойдёт?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Большинство учеников начинали с нуля. Практики построены от простого к сложному, с подробными объяснениями каждого движения.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Я не гибкий — это проблема?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Йога развивает гибкость, а не требует её. Начинаем с того уровня, на котором вы сейчас.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">У меня проблемы со спиной — можно заниматься?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Именно для этого и нужна йога. Практики адаптируются под ваши особенности. Многие ученики пришли с хронической болью в спине и получили результат.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Что если я пропущу занятие?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Записи всех занятий доступны в течение месяца. Можно заниматься в удобное время.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Онлайн или офлайн — в чём разница?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Онлайн через Zoom — из дома. Офлайн — живые занятия в Санкт-Петербурге. Онлайн удобен для тех, кто работает удалённо.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Можно заниматься при беременности?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Да, но с адаптацией. Обсудим вашу ситуацию индивидуально перед началом.</p></div></div>
-        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Что нужно для онлайн-занятия?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a" role="region"><p>Коврик для йоги, удобная одежда и стабильный интернет.</p></div></div>
+      <span class="faq__badge">Частые вопросы</span>
+      <div class="faq__list">
+        <details class="faq__item"><summary>Никогда не занимался йогой — мне подойдёт?<span class="faq__ico"></span></summary><div class="faq__ans">Да. Все практики строятся от простого к сложному — начинаем с базовых движений и дыхания, без сложных асан.</div></details>
+        <details class="faq__item"><summary>Я не гибкий — это проблема?<span class="faq__ico"></span></summary><div class="faq__ans">Нет. Гибкость — это результат практики, а не условие для старта. Работаем в комфортном для тела диапазоне.</div></details>
+        <details class="faq__item"><summary>У меня проблемы со спиной — можно заниматься?<span class="faq__ico"></span></summary><div class="faq__ans">Чаще всего да, и именно это даёт лучший эффект. Расскажите о своих особенностях — подберём безопасную нагрузку.</div></details>
+        <details class="faq__item"><summary>Что если я пропущу занятие?<span class="faq__ico"></span></summary><div class="faq__ans">Все занятия группы записываются, запись остаётся у вас — можно практиковать в удобное время.</div></details>
+        <details class="faq__item"><summary>Онлайн или офлайн — в чём разница?<span class="faq__ico"></span></summary><div class="faq__ans">Онлайн — из любой точки мира по видеосвязи. Офлайн — индивидуально и парно в Санкт-Петербурге.</div></details>
+        <details class="faq__item"><summary>Можно заниматься при беременности?<span class="faq__ico"></span></summary><div class="faq__ans">Да, с адаптированной программой. Обязательно предупредите заранее и согласуйте практику с врачом.</div></details>
+        <details class="faq__item"><summary>Что нужно для онлайн-занятия?<span class="faq__ico"></span></summary><div class="faq__ans">Коврик, удобная одежда, немного места и устройство с камерой. Всё остальное покажу на занятии.</div></details>
       </div>
     </div>
   </section>
 
   <!-- TELEGRAM -->
-  <section class="section tg-section" aria-label="Telegram">
+  <section class="section tg" id="contacts">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">Telegram</div>
-        <h2 class="section-title">Полезное в Telegram</h2>
-        <p class="section-sub">Бесплатный контент для здоровой спины</p>
+      <div class="tg__head">
+        <h2>Полезное в Telegram</h2>
+        <p class="tg__sub">Бесплатный контент для здоровой спины</p>
       </div>
-      <div class="tg-grid">
-        <div class="tg-item reveal">
-          <div class="tg-circle"><svg viewBox="0 0 28 28"><path d="M14 2v24"/><circle cx="14" cy="5" r="2"/><circle cx="14" cy="11" r="2.5"/><circle cx="14" cy="17" r="2.5"/><circle cx="14" cy="23" r="2"/></svg></div>
-          <p>Упражнения для шеи и спины</p>
-        </div>
-        <div class="tg-item reveal reveal-delay-1">
-          <div class="tg-circle"><svg viewBox="0 0 28 28"><path d="M14 3c-3.5 3.5-7 7-7 12a7 7 0 0 0 14 0c0-5-3.5-8.5-7-12z"/><path d="M14 12v6m-2.5-3.5L14 17l2.5-2.5"/></svg></div>
-          <p>Дыхательные техники от стресса</p>
-        </div>
-        <div class="tg-item reveal reveal-delay-2">
-          <div class="tg-circle"><svg viewBox="0 0 28 28"><path d="M10 21h8m-6 2.5h4"/><path d="M14 3a7 7 0 0 0-4.3 12.5V19h8.6v-3.5A7 7 0 0 0 14 3z"/><line x1="14" y1="10" x2="14" y2="14"/><line x1="12" y1="12" x2="16" y2="12"/></svg></div>
-          <p>Разборы частых ошибок</p>
-        </div>
-        <div class="tg-item reveal reveal-delay-3">
-          <div class="tg-circle"><svg viewBox="0 0 28 28"><rect x="3" y="5" width="22" height="20" rx="3"/><line x1="3" y1="11" x2="25" y2="11"/><line x1="9" y1="3" x2="9" y2="7"/><line x1="19" y1="3" x2="19" y2="7"/><circle cx="10" cy="16" r="1.5"/><circle cx="18" cy="16" r="1.5"/><circle cx="10" cy="21" r="1.5"/></svg></div>
-          <p>Анонсы занятий и ретритов</p>
-        </div>
+      <div class="tg__grid">
+        <div class="tg__item"><img src="img/icons/tg-plant.svg" alt=""><p>Упражнения для шеи и спины</p></div>
+        <div class="tg__item"><img src="img/icons/tg-waves.svg" alt=""><p>Дыхательные техники от стресса</p></div>
+        <div class="tg__item"><img src="img/icons/tg-spiral.svg" alt=""><p>Разборы частых ошибок</p></div>
+        <div class="tg__item"><img src="img/icons/tg-sun.svg" alt=""><p>Анонсы занятий и ретритов</p></div>
       </div>
-      <div class="tg-cta reveal">
-        <a href="https://t.me/yog_makarek_spb" target="_blank" rel="noopener" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L9 13m12-10l-4 18-5-8.5L3 10l18-7z"/></svg>
-          Подписаться на канал
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACTS -->
-  <section class="section contacts" id="contacts">
-    <div class="container">
-      <div class="contacts-wrap reveal">
-        <div class="contacts-bg">
-          <img src="Lesson.jpg" alt="Yoga lesson" width="1200" height="800">
+      <a href="https://t.me/stasyia_yoga" class="btn btn--green">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.6 20c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-4.9 9-8.1c.4-.3-.1-.5-.6-.2L5.9 13.1l-4.8-1.5c-1-.3-1-1 .2-1.5L20.6 2.8c.9-.3 1.6.2 1.3 1.5Z"/></svg>
+        Подписаться на канал
+      </a>
+      <div class="tg__contacts">
+        <div class="tg__row">
+          <a class="tg__c" href="https://t.me/stasyia_yoga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 3-9 15-4-6-6-2 19-7Z" stroke-linejoin="round"/></svg>Telegram: @stasyia_yoga</a>
+          <a class="tg__c" href="https://instagram.com/stasyia.yoga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram: @stasyia.yoga</a>
         </div>
-        <div class="contacts-body">
-          <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="c-link">
-            <svg viewBox="0 0 24 24"><path d="M21 3L9 13m12-10l-4 18-5-8.5L3 10l18-7z"/></svg>Telegram: @stasyia_yoga</a>
-          <a href="https://instagram.com/stasyia.yoga" target="_blank" rel="noopener" class="c-link">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>Instagram: @stasyia.yoga</a>
-          <p class="c-location"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Санкт-Петербург (офлайн) + онлайн по всему миру</p>
-        </div>
+        <span class="tg__c sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-6.3 7-12a7 7 0 1 0-14 0c0 5.7 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>Санкт-Петербург (офлайн) + онлайн по всему миру</span>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-top" id="cta">
-      <a href="https://t.me/stasyia_yoga" target="_blank" rel="noopener" class="btn btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L9 13m12-10l-4 18-5-8.5L3 10l18-7z"/></svg>Попробовать</a>
-    </div>
-    <div class="container footer-bottom">
-      <a href="#" class="logo">Stasyia Yoga</a>
-      <div class="footer-links">
-        <a href="https://t.me/yog_makarek_spb" target="_blank" rel="noopener">Telegram</a>
-        <a href="https://instagram.com/stasyia.yoga" target="_blank" rel="noopener">Instagram</a>
-      </div>
-      <div class="footer-copy">&copy; 2025 Stasyia Yoga</div>
+    <div class="container">
+      <div class="footer__links"><a href="https://t.me/stasyia_yoga">Telegram</a><a href="https://instagram.com/stasyia.yoga">Instagram</a></div>
+      <div class="footer__copy">© 2025 Stasyia Yoga</div>
     </div>
   </footer>
 
   <script>
-    // Header scroll
-    var hdr = document.getElementById('header');
-    window.addEventListener('scroll', function() {
-      hdr.classList.toggle('scrolled', window.scrollY > 40);
-    }, {passive: true});
-
-    // Mobile menu
-    var menuBtn = document.getElementById('menuBtn');
-    var nav = document.getElementById('nav');
-    menuBtn.addEventListener('click', function() {
-      var open = nav.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', open);
-    });
-
-    // Scroll reveal (Skill: bencium motion-spec — IntersectionObserver)
-    var reveals = document.querySelectorAll('.reveal');
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach(function(el) { io.observe(el); });
-
-    // FAQ
-    document.querySelectorAll('.faq-q').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var item = btn.parentElement;
-        var wasOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(function(i) {
-          i.classList.remove('open');
-          i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
-        });
-        if (!wasOpen) {
-          item.classList.add('open');
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-
-    // Reviews slider
-    var track = document.getElementById('rTrack');
-    var dotsWrap = document.querySelector('.dots');
-    var cur = 0;
-
-    function getPerView() { return window.innerWidth > 768 ? 2 : 1; }
-
-    function getTotal() {
-      var cards = track.children.length;
-      var pv = getPerView();
-      return Math.max(1, cards - pv + 1);
-    }
-
-    function buildDots() {
-      var total = getTotal();
-      dotsWrap.innerHTML = '';
-      for (var i = 0; i < total; i++) {
-        var btn = document.createElement('button');
-        btn.className = 'dot' + (i === cur ? ' on' : '');
-        btn.dataset.i = i;
-        btn.addEventListener('click', function() { slide(+this.dataset.i); });
-        dotsWrap.appendChild(btn);
-      }
-    }
-
-    function slide(i) {
-      var total = getTotal();
-      cur = Math.max(0, Math.min(i, total - 1));
-      var card = track.children[0];
-      var w = card.offsetWidth + parseFloat(getComputedStyle(track).gap);
-      track.style.transform = 'translateX(-' + cur * w + 'px)';
-      dotsWrap.querySelectorAll('.dot').forEach(function(d, idx) { d.classList.toggle('on', idx === cur); });
-    }
-
-    document.getElementById('rNext').addEventListener('click', function() { slide((cur + 1) % getTotal()); });
-    document.getElementById('rPrev').addEventListener('click', function() { slide((cur - 1 + getTotal()) % getTotal()); });
-
-    buildDots();
-    window.addEventListener('resize', function() {
-      buildDots();
-      slide(Math.min(cur, getTotal() - 1));
-    });
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        var t = document.querySelector(a.getAttribute('href'));
-        if (t) { t.scrollIntoView({behavior: 'smooth', block: 'start'}); nav.classList.remove('open'); }
-      });
+    document.querySelector('.burger')?.addEventListener('click',()=>{
+      const n=document.querySelector('.nav');const o=n.style.display==='flex';
+      n.style.cssText=o?'':'display:flex;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:#191713;padding:20px 16px;gap:18px;margin:0';
     });
   </script>
 </body>
